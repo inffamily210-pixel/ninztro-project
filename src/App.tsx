@@ -24,6 +24,8 @@ import {
 } from './utils/projectStorage.ts';
 import { generate3DTrackingTrajectory } from './utils/tracking3D.ts';
 import { playSynthSound } from './utils/audioSynth.ts';
+import { useIsMobile } from './hooks/useIsMobile.ts';
+import { MobileCapCutStudio } from './components/mobile/MobileCapCutStudio.tsx';
 
 export default function App() {
   const initialClips = createDefaultClips();
@@ -32,6 +34,11 @@ export default function App() {
 
   // Navigation: Menu 1 (About), Menu 2 (Projects List), Menu 3 (Editor)
   const [currentMainView, setCurrentMainView] = useState<'about' | 'projects' | 'editor'>('editor');
+
+  // Mobile layout detection (CapCut / Alight Motion APK style for mobile viewports)
+  const isMobileScreen = useIsMobile(768);
+  const [deviceMode, setDeviceMode] = useState<'auto' | 'mobile' | 'desktop'>('auto');
+  const isMobileLayout = deviceMode === 'mobile' || (deviceMode === 'auto' && isMobileScreen);
 
   // Stored projects library
   const [savedProjects, setSavedProjects] = useState<StoredProjectData[]>(() => {
@@ -422,18 +429,21 @@ export default function App() {
   return (
     <div className="h-screen w-screen flex flex-col bg-[#0c0e14] text-zinc-100 overflow-hidden select-none font-sans">
       {/* Top Header with 3 Main Menus (Tentang Ninztro | List Project | Studio Editing) */}
-      <Header
-        project={project}
-        onUpdateProject={updateProject}
-        onOpenExport={() => setIsExportOpen(true)}
-        onCaptureSnapshot={handleCaptureSnapshot}
-        onTriggerAiGrade={handleTriggerAiGrade}
-        isComparingOriginal={isComparingOriginal}
-        onToggleCompare={() => setIsComparingOriginal(!isComparingOriginal)}
-        isAiLoading={isAiLoading}
-        currentMainView={currentMainView}
-        onNavigateView={setCurrentMainView}
-      />
+      {/* On mobile editor view, MobileCapCutStudio has its own sleek native header to maximize canvas height */}
+      {(!isMobileLayout || currentMainView !== 'editor') && (
+        <Header
+          project={project}
+          onUpdateProject={updateProject}
+          onOpenExport={() => setIsExportOpen(true)}
+          onCaptureSnapshot={handleCaptureSnapshot}
+          onTriggerAiGrade={handleTriggerAiGrade}
+          isComparingOriginal={isComparingOriginal}
+          onToggleCompare={() => setIsComparingOriginal(!isComparingOriginal)}
+          isAiLoading={isAiLoading}
+          currentMainView={currentMainView}
+          onNavigateView={setCurrentMainView}
+        />
+      )}
 
       {/* Main Content Area based on Selected Menu */}
       {currentMainView === 'about' && (
@@ -456,46 +466,64 @@ export default function App() {
       )}
 
       {currentMainView === 'editor' && (
-        <>
-          {/* Main Workspace (Sidebar Tabs + Inspector Container + Viewport Player) */}
-          <div className="flex-1 flex overflow-hidden">
-            {/* Left Studio Tabs Bar */}
-            <SidebarTabs
-              activeTab={project.activeTab}
-              onSelectTab={(tab) => updateProject({ activeTab: tab })}
-            />
-
-            {/* Inspector Panel for active studio tool */}
-            <InspectorContainer
-              project={project}
-              onUpdateProject={updateProject}
-              selectedClip={selectedClip}
-              selected3DElement={selected3DElement}
-              selectedAudioTrack={selectedAudioTrack}
-              isComparingOriginal={isComparingOriginal}
-              onToggleCompare={() => setIsComparingOriginal(!isComparingOriginal)}
-            />
-
-            {/* Central Viewport Player Compositor */}
-            <ViewportPlayer
-              project={project}
-              onUpdateProject={updateProject}
-              onTogglePlay={togglePlay}
-              isComparingOriginal={isComparingOriginal}
-              onAddTrackingPointAtCoord={handleAddTrackingPointAtCoord}
-            />
-          </div>
-
-          {/* Bottom Multi-Track Precision Timeline */}
-          <Timeline
+        isMobileLayout ? (
+          <MobileCapCutStudio
             project={project}
             onUpdateProject={updateProject}
             onTogglePlay={togglePlay}
             onSplitClip={handleSplitClip}
             onDeleteSelectedClip={handleDeleteSelectedClip}
             selectedClip={selectedClip}
+            selected3DElement={selected3DElement}
+            selectedAudioTrack={selectedAudioTrack}
+            isComparingOriginal={isComparingOriginal}
+            onToggleCompare={() => setIsComparingOriginal(!isComparingOriginal)}
+            onOpenExport={() => setIsExportOpen(true)}
+            onNavigateToProjects={() => setCurrentMainView('projects')}
+            onNavigateToAbout={() => setCurrentMainView('about')}
           />
-        </>
+        ) : (
+          <>
+            {/* Main Workspace (Sidebar Tabs + Inspector Container + Viewport Player) */}
+            <div className="flex-1 flex overflow-hidden">
+              {/* Left Studio Tabs Bar */}
+              <SidebarTabs
+                activeTab={project.activeTab}
+                onSelectTab={(tab) => updateProject({ activeTab: tab })}
+              />
+
+              {/* Inspector Panel for active studio tool */}
+              <InspectorContainer
+                project={project}
+                onUpdateProject={updateProject}
+                selectedClip={selectedClip}
+                selected3DElement={selected3DElement}
+                selectedAudioTrack={selectedAudioTrack}
+                isComparingOriginal={isComparingOriginal}
+                onToggleCompare={() => setIsComparingOriginal(!isComparingOriginal)}
+              />
+
+              {/* Central Viewport Player Compositor */}
+              <ViewportPlayer
+                project={project}
+                onUpdateProject={updateProject}
+                onTogglePlay={togglePlay}
+                isComparingOriginal={isComparingOriginal}
+                onAddTrackingPointAtCoord={handleAddTrackingPointAtCoord}
+              />
+            </div>
+
+            {/* Bottom Multi-Track Precision Timeline */}
+            <Timeline
+              project={project}
+              onUpdateProject={updateProject}
+              onTogglePlay={togglePlay}
+              onSplitClip={handleSplitClip}
+              onDeleteSelectedClip={handleDeleteSelectedClip}
+              selectedClip={selectedClip}
+            />
+          </>
+        )
       )}
 
       {/* Export & Project Share Link Modal */}

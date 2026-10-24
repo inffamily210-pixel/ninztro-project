@@ -83,44 +83,47 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="h-4 w-px bg-zinc-800 hidden md:block" />
 
         {/* 3 Main Menu Navigation Pills */}
-        <nav className="flex items-center gap-1 bg-zinc-950 p-1 rounded-xl border border-zinc-850">
+        <nav className="flex items-center gap-0.5 sm:gap-1 bg-zinc-950 p-0.5 sm:p-1 rounded-xl border border-zinc-850">
           <button
             type="button"
             onClick={() => onNavigateView('about')}
-            className={`px-3 py-1 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer ${
+            className={`px-2 sm:px-3 py-1 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1 sm:gap-1.5 cursor-pointer ${
               currentMainView === 'about'
                 ? 'bg-zinc-800 text-white shadow-sm'
                 : 'text-zinc-400 hover:text-white hover:bg-zinc-900'
             }`}
           >
             <Info className="w-3.5 h-3.5" />
-            <span>Tentang Ninztro</span>
+            <span className="hidden sm:inline">Tentang Ninztro</span>
+            <span className="sm:hidden">Tentang</span>
           </button>
 
           <button
             type="button"
             onClick={() => onNavigateView('projects')}
-            className={`px-3 py-1 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer ${
+            className={`px-2 sm:px-3 py-1 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1 sm:gap-1.5 cursor-pointer ${
               currentMainView === 'projects'
                 ? 'bg-zinc-800 text-white shadow-sm'
                 : 'text-zinc-400 hover:text-white hover:bg-zinc-900'
             }`}
           >
             <FolderOpen className="w-3.5 h-3.5" />
-            <span>List Project</span>
+            <span className="hidden sm:inline">List Project</span>
+            <span className="sm:hidden">Proyek</span>
           </button>
 
           <button
             type="button"
             onClick={() => onNavigateView('editor')}
-            className={`px-3 py-1 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer ${
+            className={`px-2 sm:px-3 py-1 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1 sm:gap-1.5 cursor-pointer ${
               currentMainView === 'editor'
                 ? 'bg-zinc-800 text-white shadow-sm'
                 : 'text-zinc-400 hover:text-white hover:bg-zinc-900'
             }`}
           >
             <MonitorPlay className="w-3.5 h-3.5 text-zinc-300" />
-            <span>Studio Editing</span>
+            <span className="hidden sm:inline">Studio Editing</span>
+            <span className="sm:hidden">Studio</span>
           </button>
         </nav>
       </div>
@@ -222,10 +225,11 @@ export const Header: React.FC<HeaderProps> = ({
             if (currentMainView !== 'editor') onNavigateView('editor');
             onOpenExport();
           }}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-zinc-100 hover:bg-white text-zinc-950 shadow-md transition-all cursor-pointer"
+          className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-zinc-100 hover:bg-white text-zinc-950 shadow-md transition-all cursor-pointer"
         >
           <Share2 className="w-3.5 h-3.5" />
-          <span>Ekspor & Bagikan Link</span>
+          <span className="hidden sm:inline">Ekspor & Bagikan Link</span>
+          <span className="sm:hidden">Ekspor</span>
         </button>
       </div>
     </header>

@@ -64,7 +64,7 @@ export const ProjectsListView: React.FC<ProjectsListViewProps> = ({
 
   return (
     <div className="flex-1 bg-[#0c0e14] text-zinc-200 overflow-y-auto custom-scrollbar select-none">
-      <div className="max-w-6xl mx-auto px-6 py-8 space-y-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-5 sm:py-8 space-y-5 sm:space-y-6">
         {/* View Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-zinc-800 pb-5">
           <div>

@@ -403,7 +403,6 @@ export const ViewportPlayer: React.FC<ViewportPlayerProps> = ({
                   return (
                     <div
                       key={elem.id}
-                      style={style}
                       className="w-20 h-20 border-2 rounded-lg rotate-45 animate-pulse flex items-center justify-center shadow-xl perspective-500"
                       style={{ ...style, borderColor: elem.color }}
                     >

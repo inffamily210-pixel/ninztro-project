@@ -82,8 +82,8 @@ export const AboutView: React.FC<AboutViewProps> = ({
   return (
     <div className="flex-1 bg-[#0c0e14] text-zinc-200 overflow-y-auto custom-scrollbar select-none">
       {/* Top Hero Section */}
-      <div className="max-w-6xl mx-auto px-6 py-10 space-y-8">
-        <div className="border border-zinc-800 bg-[#11141d] rounded-2xl p-8 shadow-xl">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-6 sm:space-y-8">
+        <div className="border border-zinc-800 bg-[#11141d] rounded-2xl p-5 sm:p-8 shadow-xl">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="space-y-3 max-w-2xl">
               <div className="flex items-center gap-2">
