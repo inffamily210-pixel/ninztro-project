@@ -1,0 +1,6 @@
+{
+  "name": "Ninztro",
+  "description": "Professional video and photo editor with advanced transitions, AI filters, precision keyframing, dark/light color grading, audio mixer, and 3D motion tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
